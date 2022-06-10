@@ -1,0 +1,70 @@
+<?php
+$con = mysqli_connect("localhost","root","","bank") or die(" can not connect");
+// Make sure we connected successfully
+if(! $con)
+{
+    die('Connection Failed'.mysqli_error());
+}
+
+$email = $_POST['inputEmail'];
+$q="SELECT * FROM bank_data WHERE fullname = 'kaveri koli'";
+	$m = mysqli_query($con,$q);
+	$row = mysqli_fetch_array($m);
+	//echo $row['email'];
+	$a = "OTP = 1234";
+	$b = "Password";
+	
+	if($email == $row['email'])
+	{
+		$CheckSQL="UPDATE bank_data SET otp = '$a' WHERE $email = $row['email']";
+		$res = mysqli_query($con,$CheckSQL);
+
+		include 'phpMailer\class.phpmailer.php';
+		include 'phpMailer\PHPMailerAutoload.php';
+		include "phpMailer\class.smtp.php";	
+
+		$mail = new PHPMailer;
+		// Set PHPMailer to use the sendmail transport
+		//$mail->SMTPDebug = 2;
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';              // Specify main and backup SMTP servers
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->Username = 'waniharsha08@gmail.com';                 // SMTP username
+		$mail->Password = 'monirani7083';                           // SMTP password
+		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = 587;                                    // TCP port to connect to
+
+//Set who the message is to be sent from
+		$mail->setFrom('waniharsha08@gmail.com', 'Harsha');
+//Set an alternative reply-to address
+
+//Set who the message is to be sent to
+		$mail->addAddress("$email");
+?>
+
+<script>
+    console.log("=======$email===========");
+        filter = <?php echo json_encode($email); ?>;
+        console.log(filter);
+</script>
+<?php
+//Set the subject line
+		$mail->Subject = $b;
+
+		$mail->Body = $a;
+
+
+		if (!$mail->send()) {
+			echo "Mailer Error: "; // . $mail->ErrorInfo;
+		} else {
+			echo "Message sent!";
+		} 
+
+
+
+	}
+	else
+	{
+		echo "enter valid email";
+	}
+?>
