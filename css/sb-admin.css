@@ -13,6 +13,14 @@ body {
   height: 100%;
 }
 
+//////////
+
+body {
+  height: 100%;
+}
+
+//////
+
 #wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
